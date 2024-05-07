@@ -7,5 +7,4 @@ void mq7_sensor() {
   Serial.print("MQ7 voltage: "); Serial.println(mq7_voltage);
   Serial.print("MQ7 ppm: "); Serial.println(mq7_ppm);
   Serial.print("MQ7 CO: "); Serial.println(mq7_CO);
-  delay(1000);
 }
