@@ -15,6 +15,16 @@ byte microSymbol[8] = {
   B10000,
   B00000
 };
+byte cubicSymbol[8] = {
+  B11100,
+  B00100,
+  B11100,
+  B00100,
+  B11100,
+  B00000,
+  B00000,
+  B00000
+};
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 void setup() {
@@ -25,6 +35,7 @@ void setup() {
   lcd.begin();
   lcd.backlight();
   lcd.createChar(0, microSymbol);
+  lcd.createChar(1, cubicSymbol);
   lcd.clear();
 
   lcd.setCursor(0,0);
@@ -48,6 +59,7 @@ void loop() {
   lcd.print("CO=");
   lcd.print(mq7_CO);
   lcd.write(byte(0));
-  lcd.print("m/m3");
+  lcd.print("g/m");
+  lcd.write(byte(1));
   delay(1000);
 }

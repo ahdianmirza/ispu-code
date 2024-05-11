@@ -1,5 +1,8 @@
 // Import Library
 #include <LiquidCrystal_I2C.h>
+#include <WiFiManager.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 
 // Define Pin Sensor
 #define mq7_pin 33
@@ -28,6 +31,16 @@ byte microSymbol[8] = {
   B10000,
   B00000
 };
+byte cubicSymbol[8] = {
+  B11100,
+  B00100,
+  B11100,
+  B00100,
+  B11100,
+  B00000,
+  B00000,
+  B00000
+};
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 // Inisialisasi fungsi
@@ -38,15 +51,39 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Sensor start");
 
+  //  Wifi Manager
+  WiFi.mode(WIFI_STA);
+  WiFiManager wm;
+  // reset setting
+  // wm.resetSetting();
+  bool res;
+  res = wm.autoConnect("ESP32-ISPU MONITORING", "");
+
   // Start the LCD
   lcd.begin();
   lcd.backlight();
   lcd.createChar(0, microSymbol);
+  lcd.createChar(1, cubicSymbol);
   lcd.clear();
 
   lcd.setCursor(0,0);
-  lcd.print("Connected");
-  delay(3000);
+  lcd.print("Waiting to connect");
+
+  // Wifi Condition 
+  if (!res) {
+    Serial.println("Failed to connect");
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Failed to connect");
+    delay(1000);
+    // ESP.restart();
+  } else {
+    Serial.println("Connected!");
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Connected!");
+    delay(3000);
+  }
 }
 
 void loop() {
@@ -61,12 +98,14 @@ void loop() {
   lcd.print("CO=");
   lcd.print(mq7_CO);
   lcd.write(byte(0));
-  lcd.print("m/m3");
+  lcd.print("g/m");
+  lcd.write(byte(1));
 
   lcd.setCursor(0,1);
   lcd.print("NO2=");
   lcd.print(mq135_NO2);
   lcd.write(byte(0));
-  lcd.print("m/m3");
+  lcd.print("g/m");
+  lcd.write(byte(1));
   delay(1000);
 }
