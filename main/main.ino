@@ -43,9 +43,14 @@ byte cubicSymbol[8] = {
 };
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
+// Post API
+unsigned long lastTime = 0;
+unsigned long timerDelay = 5000;
+
 // Inisialisasi fungsi
 void mq7_sensor();
 void mq135_sensor();
+void postDataSensor();
 
 void setup() {
   Serial.begin(115200);
@@ -107,5 +112,8 @@ void loop() {
   lcd.write(byte(0));
   lcd.print("g/m");
   lcd.write(byte(1));
+
+  // Send Data to Database 
+  postDataSensor();
   delay(1000);
 }
