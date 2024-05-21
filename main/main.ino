@@ -20,6 +20,14 @@ float mq135_voltage;
 float mq135_ppm;
 float mq135_NO2;
 
+// ISPU Value
+float ispu_CO;
+float ispu_NO2;
+
+// ISPU Condition
+String status_CO;
+String status_NO2;
+
 // LCD Need
 byte microSymbol[8] = {
   B00000,
@@ -45,12 +53,15 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 // Post API
 unsigned long lastTime = 0;
-unsigned long timerDelay = 5000;
+unsigned long lastTimeUpdate = 0;
+unsigned long timerDelay = 10000;
+unsigned long timerDelayUpdate = 5000;
 
 // Inisialisasi fungsi
 void mq7_sensor();
 void mq135_sensor();
 void postDataSensor();
+void updateDataSensor();
 
 void setup() {
   Serial.begin(115200);
@@ -113,7 +124,16 @@ void loop() {
   lcd.print("g/m");
   lcd.write(byte(1));
 
+  lcd.setCursor(0,2);
+  lcd.print("ISPU CO = ");
+  lcd.print(ispu_CO);
+
+  lcd.setCursor(0,3);
+  lcd.print("ISPU NO2 = ");
+  lcd.print(ispu_NO2);
+
   // Send Data to Database 
   postDataSensor();
+  updateDataSensor();
   delay(1000);
 }
