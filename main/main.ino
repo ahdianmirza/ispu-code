@@ -3,12 +3,14 @@
 #include <WiFiManager.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <MQ7.h>
 
 // Define Pin Sensor
-#define mq7_pin 33
+//#define mq7_pin 33
 #define mq135_pin 35
 
 // MQ7 Sensor
+MQ7 mq7(33, 3.3);
 int mq7_value;
 float mq7_voltage;
 float mq7_ppm;
@@ -70,10 +72,10 @@ void setup() {
   //  Wifi Manager
   WiFi.mode(WIFI_STA);
   WiFiManager wm;
-  // reset setting
-  // wm.resetSetting();
   bool res;
-  res = wm.autoConnect("ESP32-ISPU MONITORING", "");
+  // reset setting
+//  res = wm.resetSettings();
+  res = wm.autoConnect("ESP32-ISPU MONITORING TEST", "");
 
   // Start the LCD
   lcd.begin();

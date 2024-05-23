@@ -11,7 +11,7 @@ void updateDataSensor() {
       postData = "co=" + String(CO_postData) + "&no2=" + String(NO2_postData) + "&ispu_co=" + String(ispu_CO_postData) + "&ispu_no2=" + String(ispu_NO2_postData);
 
       HTTPClient http;
-      http.setTimeout(1000);
+//      http.setTimeout(1000);
       http.begin("http://192.168.101.58:8080/api/data-dashboard");
       http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
